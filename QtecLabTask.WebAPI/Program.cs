@@ -1,17 +1,22 @@
-using Microsoft.EntityFrameworkCore;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
 using QtecLabTask.Core;
-using QtecLabTask.Core.Data;
+using QtecLabTask.Core.Mappings;
+using QtecLabTask.WebAPI.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<AccountDtoValidator>());
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//DB Connection using DI
+//DB Connection and IOC using DI
 builder.Services.AddInfrastructure(builder.Configuration);
 
 //DB Connection
@@ -20,7 +25,29 @@ builder.Services.AddInfrastructure(builder.Configuration);
 //    options.UseSqlServer(builder.Configuration.GetConnectionString("SQLServerConnectionString"));
 //});
 
-//IOC
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+
+//custom error response for Fluent Validation
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        var errors = context.ModelState
+            .Where(e => e.Value.Errors.Count > 0)
+            .Select(e => new
+            {
+                Field = e.Key,
+                Errors = e.Value.Errors.Select(x => x.ErrorMessage)
+            });
+
+        return new BadRequestObjectResult(new
+        {
+            Message = "Validation failed",
+            Errors = errors
+        });
+    };
+});
 
 var app = builder.Build();
 

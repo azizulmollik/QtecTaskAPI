@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QtecLabTask.Core.Data;
+using QtecLabTask.Core.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,9 @@ namespace QtecLabTask.Core
         {
             var connectionString = configuration.GetConnectionString("SQLServerConnectionString");
             services.AddDbContext<QtecLabDbContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
             return services;
         }
     }
