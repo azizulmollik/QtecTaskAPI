@@ -1,0 +1,6 @@
+@QtecLabTask.WebUI_HostAddress = http://localhost:5013
+
+GET {{QtecLabTask.WebUI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
