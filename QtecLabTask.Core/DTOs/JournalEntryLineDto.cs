@@ -1,14 +1,11 @@
-﻿namespace QtecLabTask.Core.Entities
+﻿
+namespace QtecLabTask.Core.DTOs
 {
-    public class JournalEntryLine
+    public class JournalEntryLineDto
     {
         public int Id { get; set; }
-        public int JournalEntryId { get; set; }
         public int AccountId { get; set; }
         public decimal Debit { get; set; }
         public decimal Credit { get; set; }
-
-        public JournalEntry JournalEntry { get; set; }
-
     }
 }

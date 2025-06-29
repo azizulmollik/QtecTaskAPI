@@ -9,6 +9,8 @@ namespace QtecLabTask.Core.Mappings
     {
         public MappingProfile() {
             CreateMap<Account, AccountDto>().ReverseMap();
+            CreateMap<JournalEntry, JournalEntryDto>().ReverseMap();
+            CreateMap<JournalEntryLine, JournalEntryLineDto>().ReverseMap();
         }
     }
 }

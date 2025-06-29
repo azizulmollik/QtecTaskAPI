@@ -2,6 +2,7 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using QtecLabTask.Core;
+using QtecLabTask.Core.Features.Handlers;
 using QtecLabTask.Core.Mappings;
 using QtecLabTask.WebAPI.Validators;
 
@@ -26,7 +27,8 @@ builder.Services.AddInfrastructure(builder.Configuration);
 //});
 
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<CreateAccountHandler>());
 
 //custom error response for Fluent Validation
 builder.Services.Configure<ApiBehaviorOptions>(options =>

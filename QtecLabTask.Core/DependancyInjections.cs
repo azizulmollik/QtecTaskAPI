@@ -3,11 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QtecLabTask.Core.Data;
 using QtecLabTask.Core.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using QtecLabTask.Core.Services;
 
 namespace QtecLabTask.Core
 {
@@ -20,6 +16,8 @@ namespace QtecLabTask.Core
 
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IJournalEntryService, JournalEntryService>();
+            services.AddScoped<IJournalEntryRepository, JournalEntryRepository>();
             return services;
         }
     }
